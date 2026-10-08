@@ -212,8 +212,9 @@ config = {
         'force_no_night_light': False,
     },
     'macos': {  # macOS configuration
-        'title': 'Wuthering Waves',  # Window title / process name to match
-        'exe': ['Wuthering Waves.app'],
+        'title': ['Wuthering Waves', '鸣潮', '鳴潮', 'Client-Mac-Shipping'],  # Window title / process name to match
+        'exe': ['Wuthering Waves.app', '鸣潮.app', '鳴潮.app', 'Client-Mac-Shipping', 'Client'],
+        'bundle_id': ['com.kurogame.mingchao', 'com.kurogame.wutheringwaves', 'com.kurogame.wutheringwaves.global'],
         'interaction': 'Mac',
         'capture_method': ['MacCapture'],
     },
