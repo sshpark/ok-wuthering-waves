@@ -75,3 +75,6 @@ repo/
 
 assets/result.json
 src/gui/CharacterCodeTab.py
+dist_macos/
+build_macos/
+icons/icon.icns
