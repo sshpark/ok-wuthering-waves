@@ -44,6 +44,19 @@ class TestCharacterCodeTab(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.app = QApplication.instance() or QApplication([])
+        from ok import og
+        from ok.ui.qt.common.config import cfg, Language
+        cls.old_app = og.app
+        cls.old_lang = cfg.language.value
+        og.app = None
+        cfg.language.value = Language.ENGLISH
+
+    @classmethod
+    def tearDownClass(cls):
+        from ok import og
+        from ok.ui.qt.common.config import cfg
+        og.app = cls.old_app
+        cfg.language.value = cls.old_lang
 
     def setUp(self):
         self.old_config_folder = Config.config_folder

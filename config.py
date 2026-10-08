@@ -1,6 +1,6 @@
 import os
 import re
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 from ok import Box, ConfigOption, Icon
 from ok.util.GlobalConfig import create_basic_options
@@ -114,7 +114,8 @@ def _find_pc_exe_near_registered_path(registered_path):
 def calculate_pc_exe_path(running_path):
     if running_path is None:
         return _find_most_recently_run_pc_exe() or _find_pc_exe_from_registry()
-    game_exe_folder = Path(running_path).parents[3]
+    path_obj = PureWindowsPath(running_path) if '\\' in running_path else Path(running_path)
+    game_exe_folder = path_obj.parents[3]
     return str(game_exe_folder / "Wuthering Waves.exe")
 
 
@@ -209,6 +210,12 @@ config = {
         'force_no_hdr': False,
         'check_night_light': True,
         'force_no_night_light': False,
+    },
+    'macos': {  # macOS configuration
+        'title': 'Wuthering Waves',  # Window title / process name to match
+        'exe': ['Wuthering Waves.app'],
+        'interaction': 'Mac',
+        'capture_method': ['MacCapture'],
     },
     'window_size': {
         'width': 1200,

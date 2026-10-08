@@ -1,6 +1,20 @@
 import math
 
-import win32api
+import sys
+
+if sys.platform == 'win32':
+    import win32api
+else:
+    class win32api:
+        @staticmethod
+        def GetCursorPos():
+            from ok.util.cursor import get_cursor_pos
+            return get_cursor_pos()
+
+        @staticmethod
+        def SetCursorPos(pos):
+            from ok.util.cursor import set_cursor_pos
+            return set_cursor_pos(*pos)
 
 from ok import TriggerTask, Logger
 

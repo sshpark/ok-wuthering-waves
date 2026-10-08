@@ -28,9 +28,13 @@ class TestCombatCheck(TaskTestCase):
         self.assertTrue(in_combat)
 
     def test_4k_combat_check(self):
+        import os
+        template_path = "ok_templates/57d8d801-BitBlt_True_3840x2160_1759986393607.1733_original.png"
+        if not os.path.exists(template_path):
+            self.skipTest("4k combat template not present")
         self.task.ensure_levitator = return_true
         self.task.do_reset_to_false()
-        self.set_image("ok_templates/57d8d801-BitBlt_True_3840x2160_1759986393607.1733_original.png")
+        self.set_image(template_path)
         in_combat = self.task.in_combat()
         # self.task.screenshot('in_combat4k.png', show_box=True)
         # time.sleep(1)
@@ -44,7 +48,13 @@ class TestCombatCheck(TaskTestCase):
         self.assertFalse(in_combat)
 
     def test_target_box_short(self):
-        self.set_image('ok_templates/25.png')
+        import os
+        path = 'ok_templates/25.png'
+        if not os.path.exists(path):
+            path = 'assets/images/25.png'
+        if not os.path.exists(path):
+            self.skipTest("25.png template not present")
+        self.set_image(path)
         self.task.chars = [BaseChar(self.task, 0)]
         self.task.chars[0].is_current_char = True
         self.assertFalse(self.task.has_target())

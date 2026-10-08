@@ -25,3 +25,7 @@ docs = [
 web-test = [
     "ok-script[web]==2.0.8",
 ]
+
+[tool.pytest.ini_options]
+python_files = ["test_*.py", "*_test.py", "Test*.py"]
+
