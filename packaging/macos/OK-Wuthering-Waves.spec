@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
 import sys
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules, collect_dynamic_libs
 
 block_cipher = None
 
@@ -25,6 +25,18 @@ for pkg in ['ok', 'qfluentwidgets', 'onnxocr', 'onnxocr_ppocrv5']:
     except Exception as e:
         print(f"Warning: could not collect data for {pkg}: {e}")
 
+# Collect OpenVINO frontend and device plugin dynamic libraries
+binaries = []
+try:
+    import openvino
+    ov_libs_dir = os.path.join(os.path.dirname(openvino.__file__), 'libs')
+    if os.path.isdir(ov_libs_dir):
+        for f in os.listdir(ov_libs_dir):
+            if f.endswith(('.dylib', '.so')) and 'hwloc' not in f and 'tbbbind' not in f:
+                binaries.append((os.path.join(ov_libs_dir, f), 'openvino/libs'))
+except Exception as e:
+    print(f"Warning: could not collect openvino dynamic libs: {e}")
+
 # Collect all modules under src recursively
 src_modules = []
 src_dir = os.path.join(project_dir, 'src')
@@ -45,6 +57,9 @@ hidden_imports = [
     'pynput.keyboard._darwin',
     'pynput.mouse._darwin',
     'openvino',
+    'openvino.frontend',
+    'openvino.frontend.onnx',
+    'openvino.frontend.onnx.py_onnx_frontend',
     'onnxocr',
     'onnxocr_ppocrv5',
     'cv2',
@@ -60,7 +75,7 @@ except Exception as e:
 a = Analysis(
     [os.path.join(project_dir, 'main.py')],
     pathex=[project_dir, ok_script_dir],
-    binaries=[],
+    binaries=binaries,
     datas=added_files,
     hiddenimports=hidden_imports,
     hookspath=[],
