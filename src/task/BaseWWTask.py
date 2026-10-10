@@ -1022,11 +1022,17 @@ class BaseWWTask(BaseTask):
         if self.in_team_and_world():
             self.send_key(book_key, after_sleep=4)
             self.log_info(f'send {book_key} key to open')
+        if self.in_team_and_world() and sys.platform == 'darwin' and book_key.lower() == 'f2':
+            self.log_info('attempting fn+f2 key to open the book on macOS')
+            self.send_key('fn+f2', after_sleep=4)
         if self.in_team_and_world():
             self.log_info('send f2 key mouse key to open the book')
             self.send_key_down('alt')
             self.sleep(0.05)
-            self.click_relative(0.77, 0.05)
+            # Adaptively calculate right-anchored guidebook icon x-coord across aspect ratios (e.g. 16:9 vs 16:10)
+            ratio = self.width / self.height if self.height else (16 / 9)
+            x_click = max(0.65, min(0.9, 1.0 - (0.409 / ratio))) if ratio > 0 else 0.77
+            self.click_relative(x_click, 0.05)
             self.sleep(0.02)
             self.send_key_up('alt')
             self.sleep(4)

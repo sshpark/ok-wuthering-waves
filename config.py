@@ -143,6 +143,7 @@ key_config_option = ConfigOption('Game Hotkey', {
     'Bag Key': 'b',
 }, description='In Game Hotkey for Skills', config_description={
     'Bag Key': 'In-game hotkey used to open the Bag.',
+    'Guidebook Key': 'In-game hotkey used to open the Guidebook (supports "f2", "fn+f2", or custom keys like "g").',
 }, show_at_tab=True, icon=Icon.GAME)
 
 char_config_option = ConfigOption('Character Config', {
@@ -225,8 +226,11 @@ config = {
         'min_height': 800,
     },
     'supported_resolution': {
-        'ratio': '16:9',
-        'resize_to': [(2560, 1440), (1920, 1080), (1600, 900), (1280, 720)],
+        'ratio': ['16:9', '16:10'],
+        'resize_to': [
+            (2560, 1440), (1920, 1080), (1600, 900), (1280, 720),
+            (2560, 1600), (1920, 1200), (1680, 1050), (1440, 900), (1280, 800),
+        ],
         'min_size': (1280, 720)
     },
     'links': {
